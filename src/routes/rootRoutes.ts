@@ -1,10 +1,9 @@
-import { Router, Request, Response } from 'express';
+import express from "express";
 
-const router = Router();
+const router = express.Router();
 
-// GET /api/health 
-router.get('/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', message: 'API is healthy and running' });
+router.get("/", (req, res) => {
+  res.send("Welcome to Collaborative Code Review API ");
 });
 
 export default router;

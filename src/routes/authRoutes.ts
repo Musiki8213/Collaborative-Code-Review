@@ -4,6 +4,10 @@ import jwt from 'jsonwebtoken';
 import pool from '../config/db';
 
 const router = express.Router();
+router.get('/test', (req, res) => {
+  res.send('Auth routes are connected');
+});
+
 
 // Register new user
 router.post('/register', async (req, res) => {
