@@ -1,4 +1,4 @@
-# Collaborative Code Review Platform 
+# Collaborative Code Review Platform
 
 A Node.js & TypeScript API-driven backend that allows developers and teams to post code snippets, request feedback, and collaborate on code reviews in real-time.
 
@@ -6,48 +6,219 @@ A Node.js & TypeScript API-driven backend that allows developers and teams to po
 
 ## Features
 
-* **Authentication & User Management**
+- **Authentication & User Management**
+  - User registration & login
+  - JWT-based authentication
+  - Roles: Submitter, Reviewer
 
-  * User registration & login
-  * JWT-based authentication
-  * Roles: Submitter, Reviewer
-* **Projects**
+- **Projects**
+  - Create and manage projects
+  - Assign or remove members
 
-  * Create and manage projects
-  * Assign or remove members
-* **Code Submissions**
+- **Code Submissions**
+  - Upload code snippets or files (text only)
+  - Track submission status: `pending`, `in_review`, `approved`, `changes_requested`
 
-  * Upload code snippets or files (text only)
-  * Track submission status: `pending`, `in_review`, `approved`, `changes_requested`
-* **Comments**
+- **Comments**
+  - Add inline or general comments on submissions
+  - CRUD operations with proper role-based permissions
 
-  * Add inline or general comments on submissions
-  * CRUD operations with proper role-based permissions
-* **Review Workflow**
+- **Review Workflow**
+  - Approve submissions
+  - Request changes
+  - Track review history per submission
 
-  * Approve submissions
-  * Request changes
-  * Track review history per submission
-* **Notifications**
+- **Notifications**
+  - User activity feed for comments, reviews, and submissions
 
-  * User activity feed for comments, reviews, and submissions
-* **Project Analytics**
+- **Project Analytics**
+  - Average review time
+  - Submission status summary
+  - Top reviewers
 
-  * Average review time
-  * Submission status summary
-  * Top reviewers
-* **Middleware & Validation**
-
-  * Error handling middleware
-  * Input validation middleware
+- **Middleware & Validation**
+  - Error handling middleware
+  - Input validation middleware
 
 ---
 
 ## Tech Stack
 
-* Node.js with TypeScript
-* Express.js
-* PostgreSQL (with `pg` package)
+- Node.js with TypeScript
+- Express.js
+- PostgreSQL (with `pg` package)
+
+---
+
+## API Endpoints
+
+### Authentication
+
+#### Register User
+
+- **Method:** `POST`
+- **Path:** `/api/auth/register`
+- **Description:** Register a new user
+- **Request Body:**
+  ```json
+  {
+    "name": "string",
+    "email": "string",
+    "password": "string"
+  }
+  ```
+
+#### Login User
+
+- **Method:** `POST`
+- **Path:** `/api/auth/login`
+- **Description:** Login an existing user
+- **Request Body:**
+  ```json
+  {
+    "email": "string",
+    "password": "string"
+  }
+  ```
+
+### Projects
+
+#### Create Project
+
+- **Method:** `POST`
+- **Path:** `/api/projects`
+- **Description:** Create a new project (requires authentication)
+- **Request Body:**
+  ```json
+  {
+    "name": "string",
+    "description": "string (optional)"
+  }
+  ```
+
+#### List Projects
+
+- **Method:** `GET`
+- **Path:** `/api/projects`
+- **Description:** Get all projects (requires authentication)
+
+#### Add Member to Project
+
+- **Method:** `POST`
+- **Path:** `/api/projects/:id/members`
+- **Description:** Add a member to a project (requires authentication)
+- **Request Body:**
+  ```json
+  {
+    "user_id": "number",
+    "role": "string (optional, default: 'reviewer')"
+  }
+  ```
+
+#### Remove Member from Project
+
+- **Method:** `DELETE`
+- **Path:** `/api/projects/:id/members/:userId`
+- **Description:** Remove a member from a project (requires authentication)
+
+#### Get Project Stats
+
+- **Method:** `GET`
+- **Path:** `/api/projects/:id/stats`
+- **Description:** Get statistics for a project (requires authentication)
+
+### Submissions
+
+#### Create Submission
+
+- **Method:** `POST`
+- **Path:** `/api/submissions`
+- **Description:** Create a new code submission (requires authentication)
+- **Request Body:**
+  ```json
+  {
+    "project_id": "number",
+    "title": "string",
+    "code": "string"
+  }
+  ```
+
+#### Get Submissions for Project
+
+- **Method:** `GET`
+- **Path:** `/api/submissions/project/:id`
+- **Description:** Get all submissions for a project (requires authentication)
+
+### Comments
+
+#### Add Comment
+
+- **Method:** `POST`
+- **Path:** `/api/comments`
+- **Description:** Add a comment to a submission (requires authentication)
+- **Request Body:**
+  ```json
+  {
+    "submission_id": "number",
+    "content": "string",
+    "line_number": "number (optional)"
+  }
+  ```
+
+#### Get Comments for Submission
+
+- **Method:** `GET`
+- **Path:** `/api/comments/submission/:id`
+- **Description:** Get all comments for a submission (requires authentication)
+
+### Reviews
+
+#### Approve Submission
+
+- **Method:** `POST`
+- **Path:** `/api/reviews/:id/approve`
+- **Description:** Approve a submission (requires authentication)
+- **Request Body:**
+  ```json
+  {
+    "comment": "string (optional)"
+  }
+  ```
+
+#### Request Changes for Submission
+
+- **Method:** `POST`
+- **Path:** `/api/reviews/:id/request-changes`
+- **Description:** Request changes for a submission (requires authentication)
+- **Request Body:**
+  ```json
+  {
+    "comment": "string (optional)"
+  }
+  ```
+
+#### Get Review History for Submission
+
+- **Method:** `GET`
+- **Path:** `/api/reviews/:id`
+- **Description:** Get review history for a submission (requires authentication)
+
+### Notifications
+
+#### Get User Notifications
+
+- **Method:** `GET`
+- **Path:** `/api/user/:id`
+- **Description:** Get notifications for a user (requires authentication)
+
+### Root
+
+#### Welcome
+
+- **Method:** `GET`
+- **Path:** `/api`
+- **Description:** Welcome message
+
 * JWT for authentication
 * Bcrypt for password hashing
 * WebSockets (socket.io) for real-time notifications
@@ -175,43 +346,42 @@ The API is available at `http://localhost:4000`.
 
 ### Authentication
 
-* `POST /api/auth/register` — Register a new user
-* `POST /api/auth/login` — Login an existing user
+- `POST /api/auth/register` — Register a new user
+- `POST /api/auth/login` — Login an existing user
 
 ### Projects
 
-* `POST /api/projects` — Create project
-* `GET /api/projects` — List all projects
-* `POST /api/projects/:id/members` — Add member
-* `DELETE /api/projects/:id/members/:userId` — Remove member
-* `GET /api/projects/:id/stats` — Get project statistics
+- `POST /api/projects` — Create project
+- `GET /api/projects` — List all projects
+- `POST /api/projects/:id/members` — Add member
+- `DELETE /api/projects/:id/members/:userId` — Remove member
+- `GET /api/projects/:id/stats` — Get project statistics
 
 ### Submissions
 
-* `POST /api/submissions` — Create submission
-* `GET /api/submissions/project/:id` — List submissions for a project
+- `POST /api/submissions` — Create submission
+- `GET /api/submissions/project/:id` — List submissions for a project
 
 ### Comments
 
-* `POST /api/comments` — Add comment
-* `GET /api/comments/submission/:id` — List comments for a submission
+- `POST /api/comments` — Add comment
+- `GET /api/comments/submission/:id` — List comments for a submission
 
 ### Reviews
 
-* `POST /api/reviews/:id/approve` — Approve submission
-* `POST /api/reviews/:id/request-changes` — Request changes
-* `GET /api/reviews/:id` — Get review history
+- `POST /api/reviews/:id/approve` — Approve submission
+- `POST /api/reviews/:id/request-changes` — Request changes
+- `GET /api/reviews/:id` — Get review history
 
 ### Notifications
 
-* `GET /api/user/:id` — Fetch user notifications
+- `GET /api/user/:id` — Fetch user notifications
 
 ---
 
 ## Notes
 
-* **Authorization:** All routes (except registration/login) require `Authorization: Bearer <token>` header.
-* **Validation:** Requests are validated using middleware.
-* **Error Handling:** All errors return JSON with an `error` key.
-* **Real-Time Updates:** Socket.io is included for future notifications.
-
+- **Authorization:** All routes (except registration/login) require `Authorization: Bearer <token>` header.
+- **Validation:** Requests are validated using middleware.
+- **Error Handling:** All errors return JSON with an `error` key.
+- **Real-Time Updates:** Socket.io is included for future notifications.
