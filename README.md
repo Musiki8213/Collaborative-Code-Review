@@ -50,6 +50,20 @@ A Node.js & TypeScript API-driven backend that allows developers and teams to po
 
 ---
 
+## Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/Musiki8213/Collaborative-Code-Review.git
+cd collaborative-code-review
+```
+
+### Install dependencies
+
+```bash
+npm install
+---
 ## API Endpoints
 
 ### Authentication
@@ -226,19 +240,6 @@ A Node.js & TypeScript API-driven backend that allows developers and teams to po
 
 ---
 
-## Getting Started
-
-### Clone the repository
-
-```bash
-git clone https://github.com/Musiki8213/Collaborative-Code-Review.git
-cd collaborative-code-review
-```
-
-### Install dependencies
-
-```bash
-npm install
 ```
 
 ### Setup environment variables
@@ -250,8 +251,6 @@ PORT=4000
 DATABASE_URL=postgres://username:password@localhost:5432/codereview_dev
 JWT_SECRET=supersecretjwtkey
 ```
-
-> Make sure to URL-encode special characters in your password.
 
 ### Setup the database
 
